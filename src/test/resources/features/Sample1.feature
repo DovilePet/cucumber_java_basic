@@ -8,4 +8,8 @@ Feature: Introduction to cucumber part 1
     And I should see home page description
     And I should see menu
 
-
+  @newTask
+  Scenario: New Simple scenario
+    When I am on the locators page
+    Then I should see both locators page headers
+    And Buttons in Locators page are clickable

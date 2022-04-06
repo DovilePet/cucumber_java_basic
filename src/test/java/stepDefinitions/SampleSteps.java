@@ -4,6 +4,8 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import gherkin.lexer.Th;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -100,4 +102,96 @@ public class SampleSteps {
     public void iAmOnActionPage() {
         driver.get("https://kristinek.github.io/site/examples/actions");
     }
+
+    @Given("^I am on the locators page$")
+    public void IAmOnTheLocatorsPage() throws Throwable { driver.get("https://kristinek.github.io/site/examples/locators");}
+
+    @Then("^I should see both locators page headers$")
+    public void IShouldSeeBothLocatorsPageHeaders() throws Throwable {
+        assertTrue(driver.findElement(By.id("heading_1")).isDisplayed());
+        assertTrue(driver.findElement(By.id("heading_2")).isDisplayed());
+    }
+
+    @And("^Buttons in Locators page are clickable$")
+    public void ButtonsInLocatorsPageAreClickable() throws Throwable {
+        assertTrue(driver.findElement(By.name("randomButton1")).isEnabled());
+        assertTrue(driver.findElement(By.name("randomButton2")).isEnabled());
+    }
+
+    @Then("^I see error: \"([^\"]*)\"$")
+    public void iSeeError(String message) throws Throwable {
+        assertEquals(message, driver.findElement(By.id("error")).getText());
+    }
+
+    @And("^I am not navigated to age message page$")
+    public void IAmNotNavigatedToAgeMessagePage() throws Throwable {
+        assertEquals("https://kristinek.github.io/site/examples/age", driver.getCurrentUrl());
+    }
+
+    @Given("^I am on feedback page$")
+    public void IAmOnFeedbackPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/tasks/provide_feedback");
+    }
+
+    @When("^I enter feedback name: \"([^\"]*)\"$")
+    public void iEnterFeedbackName(String name) throws Throwable {
+        driver.findElement(By.id("fb_name")).clear();
+        driver.findElement(By.id("fb_name")).sendKeys(name);
+    }
+
+    @And("^I enter feedback age: (\\d+)$")
+    public void iEnterFeedbackAge(int age) throws Throwable {
+        driver.findElement(By.id("fb_age")).sendKeys(String.valueOf(age));
+    }
+
+    @And("^I click send$")
+    public void iClickSend() throws Throwable {
+        driver.findElement(By.tagName("button")).click();
+    }
+
+    @Then("^I can see name \"([^\"]*)\" in feedback$")
+    public void ICanSeeNameInFeedback(String name) throws Throwable {
+        assertEquals(name, driver.findElement(By.id("name")).getText());
+    }
+
+    @And("^I can see age (\\d+) in feedback$")
+    public void ICanSeeNameInFeedback(int age) throws Throwable {
+        assertEquals(Integer.toString(age), driver.findElement(By.id("age")).getText());
+    }
+
+    @Given("^I am on Enter Number page$")
+    public void IAmOnEnterNumberPage() throws Throwable {
+        driver.get("https://kristinek.github.io/site/tasks/enter_a_number");
+    }
+
+    @When("^I enter string \"([^\"]*)\"$")
+    public void iEnterString(String string) throws Throwable {
+        driver.findElement(By.id("numb")).clear();
+        driver.findElement(By.id("numb")).sendKeys(string);
+    }
+
+    @And("^I click submit$")
+    public void iClickSubmit() throws Throwable {
+        driver.findElement(By.tagName("button")).click();
+    }
+
+    @Then("^I get error message: \"([^\"]*)\"$")
+    public void IGetErrorMessage(String error) throws Throwable {
+        assertEquals(error, driver.findElement(By.id("ch1_error")).getText());
+    }
+
+    @When("^I enter number 64$")
+    public void IEnterNumber64() throws Throwable {
+        driver.findElement(By.id("numb")).clear();
+        driver.findElement(By.id("numb")).sendKeys("64");
+    }
+
+    @Then("^result is displayed in alert window$")
+    public void resultIsDisplayedInAlertWindow() throws Throwable {
+        Alert alert = driver.switchTo().alert();
+        assertEquals("Square root of 64 is 8.00", alert.getText());
+        //alert.accept();
+    }
+
+
 }
