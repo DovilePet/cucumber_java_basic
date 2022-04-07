@@ -139,9 +139,9 @@ public class SampleSteps {
         driver.findElement(By.id("fb_name")).sendKeys(name);
     }
 
-    @And("^I enter feedback age: (\\d+)$")
-    public void iEnterFeedbackAge(int age) throws Throwable {
-        driver.findElement(By.id("fb_age")).sendKeys(String.valueOf(age));
+    @And("^I enter feedback age: \"([^\"]*)\"$")
+    public void iEnterFeedbackAge(String age) throws Throwable {
+        driver.findElement(By.id("fb_age")).sendKeys(age);
     }
 
     @And("^I click send$")
@@ -154,9 +154,9 @@ public class SampleSteps {
         assertEquals(name, driver.findElement(By.id("name")).getText());
     }
 
-    @And("^I can see age (\\d+) in feedback$")
-    public void ICanSeeNameInFeedback(int age) throws Throwable {
-        assertEquals(Integer.toString(age), driver.findElement(By.id("age")).getText());
+    @And("^I can see age \"([^\"]*)\" in feedback$")
+    public void ICanSeeAgeInFeedback(String age) throws Throwable {
+        assertEquals(age, driver.findElement(By.id("age")).getText());
     }
 
     @Given("^I am on Enter Number page$")
@@ -193,5 +193,29 @@ public class SampleSteps {
         //alert.accept();
     }
 
+    @When("^I enter input in feedback page$")
+    public void IEnterInputInFeedbackPage(Map<String, String> feedbackInput) throws Throwable {
+        if (feedbackInput.containsKey("name")) {
+            iEnterFeedbackName(feedbackInput.get("name"));
+        }
+        iEnterFeedbackAge(feedbackInput.get("age"));
+        driver.findElement(By.xpath("//input[@value='" + feedbackInput.get("genre") + "']")).click();
+    }
 
+    @And("^I can see genre \"([^\"]*)\" in feedback$")
+    public void ICanSeeGenreInFeedback(String genre) throws Throwable {
+        assertEquals(genre, driver.findElement(By.id("gender")).getText());
+    }
+
+    @When("^I select feedback languages$")
+    public void ISelectFeedbackLanguages(List <String> languages) throws Throwable {
+        for (String language : languages) {
+            driver.findElement(By.xpath("//input[@value='" + language + "']")).click();
+        }
+    }
+
+    @Then("^I can see languages \"([^\"]*)\" in feedback$")
+    public void ICanSeeLanguagesInFeedback(String languages) throws Throwable {
+        assertEquals(languages, driver.findElement(By.id("language")).getText());
+    }
 }
