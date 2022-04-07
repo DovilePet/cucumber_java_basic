@@ -33,9 +33,7 @@ Feature: practical task 2
       | Elsa  | queen     |
 
     Scenario: remove a person
-      #When I click on the second x sign
-      # the upper line is commented because it is actually the second step in "Then" statement
-      # couldn't figure out another way to do this
+      When I click on the second x sign
       Then I cannot see the second person anymore
 
 
